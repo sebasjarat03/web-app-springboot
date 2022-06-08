@@ -80,4 +80,6 @@ public interface BusinessDelegate {
 
     Billofmaterial findByIdBillofmaterial(Integer id);
 
+    List<Purchaseorderheader> findAtleast2();
+
 }

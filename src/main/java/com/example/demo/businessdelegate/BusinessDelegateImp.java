@@ -30,6 +30,7 @@ public class BusinessDelegateImp implements BusinessDelegate {
     private final static String POH_URL = URL + "/pohs/";
     private final static String PREVIEW_URL = URL + "/prdreviews/";
     private final static String BILL_URL = URL + "/bills/";
+    private final static String CUSTOMQ_URL = URL + "/cusqueries/";
 
     private RestTemplate restTemplate;
 
@@ -217,6 +218,11 @@ public class BusinessDelegateImp implements BusinessDelegate {
     public void deleteBill(Billofmaterial bm) {
         restTemplate.delete(BILL_URL + bm.getBillofmaterialsid());
 
+    }
+
+    @Override
+    public List<Purchaseorderheader> findAtleast2() {
+        return Arrays.asList(restTemplate.getForObject(CUSTOMQ_URL + "at-least2", Purchaseorderheader[].class));
     }
 
 }

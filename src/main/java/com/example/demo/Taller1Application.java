@@ -1,16 +1,23 @@
 package com.example.demo;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.client.RestTemplate;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 import com.example.demo.dao.BillofmaterialDao;
 import com.example.demo.dao.ProducreviewDao;
 import com.example.demo.model.UserType;
 import com.example.demo.model.Userr;
 import com.example.demo.model.hr.Employee;
-import com.example.demo.model.person.Person;
 import com.example.demo.model.prchasing.Purchaseorderdetail;
 import com.example.demo.model.prchasing.Purchaseorderheader;
 import com.example.demo.model.prchasing.Shipmethod;
@@ -28,14 +35,6 @@ import com.example.demo.services.PurchaseOrderDetailService;
 import com.example.demo.services.PurchaseOrderHeaderService;
 import com.example.demo.services.ShipMethodService;
 import com.example.demo.services.VendorServiceImp;
-
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.client.RestTemplate;
-import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 
 /* @EnableJpaRepositories(basePackages = { "com.example.demo.repositories" })
 @EntityScan(basePackages = { "com.example.demo.model" })*/
@@ -113,6 +112,30 @@ public class Taller1Application {
 			pod1.setOrderqty(10);
 			pod1.setUnitprice(3.0);
 			pods.save(pod1, poh1.getPurchaseorderid());
+
+			Purchaseorderdetail pod2 = new Purchaseorderdetail();
+			pod2.setOrderqty(10);
+			pod2.setUnitprice(3.0);
+			pod2 = podr.save(pod2);
+
+			Purchaseorderdetail pod3 = new Purchaseorderdetail();
+			pod3.setOrderqty(15);
+			pod3.setUnitprice(4.0);
+			pod3 = podr.save(pod3);
+
+			List<Purchaseorderdetail> podslist = new ArrayList<Purchaseorderdetail>();
+			podslist.add(pod2);
+			podslist.add(pod3);
+
+			Purchaseorderheader poh2 = new Purchaseorderheader();
+			poh2.setPurchaseorderdetails(podslist);
+			poh2 = pohr.save(poh2);
+
+			pod2.setPurchaseorderheader(poh2);
+			pod3.setPurchaseorderheader(poh2);
+
+			podr.save(pod2);
+			podr.save(pod3);
 
 			Shipmethod sm1 = new Shipmethod();
 			sm1.setName("Ship method 1");
